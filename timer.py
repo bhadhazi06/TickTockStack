@@ -12,6 +12,7 @@ class Timer():
             self.delta -= timedelta(seconds=1)
         else:
             self.done = True
+            self.delta = self.time
 
     def get_time_str(self):
         return str(self.delta)
