@@ -89,6 +89,21 @@ def clear_entry(event):
     if event.widget.get() in ["0", "Timer"]:
         event.widget.delete(0, tk.END)
 
+def next_timer():
+    if orchestrator.timers and orchestrator.current_timer < len(orchestrator.timers) - 1:
+        orchestrator.current_timer += 1
+        # Stop the timer when jumping so it doesn't surprise the user
+        orchestrator.on = False
+        orchestrator.reset_timer()
+        refresh_queue_display() # Update the UI highlight
+
+def prev_timer():
+    if orchestrator.timers and orchestrator.current_timer > 0:
+        orchestrator.current_timer -= 1
+        orchestrator.on = False
+        orchestrator.reset_timer()
+        refresh_queue_display()
+
 orchestrator = Orchestrator()
 
 root = tk.Tk()
@@ -176,6 +191,16 @@ queue_listbox.pack(pady=5, padx=10)
 # Optional: Add a scrollbar if the list gets long
 queue_frame = tk.Frame(root)
 queue_frame.pack()
+
+# --- 5. Navigation Buttons ---
+nav_frame = tk.Frame(root)
+nav_frame.pack(side="bottom", pady=20)
+
+btn_prev = tk.Button(nav_frame, text="◀ Previous", width=10, command=prev_timer)
+btn_prev.grid(row=0, column=0, padx=10)
+
+btn_next = tk.Button(nav_frame, text="Next ▶", width=10, command=next_timer)
+btn_next.grid(row=0, column=1, padx=10)
 
 update_clock()
 
