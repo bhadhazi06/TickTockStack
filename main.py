@@ -103,6 +103,7 @@ orchestrator = Orchestrator()
 root = ctk.CTk()
 root.title("TickTockStack")
 root.geometry("450x850")
+root.iconbitmap("icon.ico")
 root.resizable(False, False)
 
 # 1. Header
