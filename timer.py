@@ -2,7 +2,8 @@ import time
 from datetime import datetime as dt, timedelta
 class Timer():
     def __init__(self, timer: tuple, name: str):
-        self.delta = timedelta(hours=timer[0], minutes=timer[1], seconds=timer[2])
+        self.time = timedelta(hours=timer[0], minutes=timer[1], seconds=timer[2])
+        self.delta = self.time
         self.done = False
         self.name = name
 
