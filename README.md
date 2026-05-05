@@ -10,16 +10,16 @@ To get this project running locally, follow these steps:
 
 ### 1. Clone the repository
 ```bash
-  git clone [https://github.com/yourusername/ticktockstack.git](https://github.com/yourusername/ticktockstack.git)
+git clone https://github.com/bhadhazi06/TickTockStack
 cd ticktockstack
 ```
 ### 2. Install Dependencies
 ```bash
-  pip install customtkinter
+pip install customtkinter
 ```
 ### 3. Run the app
 ```bash
-  python main.py
+python main.py
 ```
 
 ## How to use
