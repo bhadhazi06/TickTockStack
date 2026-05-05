@@ -6,8 +6,8 @@ class Orchestrator():
         self.current_timer = 0
         self.on = False
 
-    def add_timer(self, time):
-        timer = Timer(time , "Timer")
+    def add_timer(self, time, name):
+        timer = Timer(time , name)
         self.timers.append(timer)
 
 

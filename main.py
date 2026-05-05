@@ -1,33 +1,41 @@
 import tkinter as tk
 from orchestrator import Orchestrator
 
+
 def update_clock():
-    # 1. Tell the orchestrator to perform the logic
-    # Check if there are actually timers to count down
     if orchestrator.timers:
         orchestrator.countdown()
-
-        # 2. Update the label on the screen
         current = orchestrator.timers[orchestrator.current_timer]
-        timer_label.config(text=current.get_time_str())
 
-    # 3. Schedule this function to run again in 1 second (1000ms)
+        # Update the main time
+        timer_label.config(text=current.get_time_str())
+        # Update the name label to show which timer is active
+        current_task_label.config(text=current.name)
+    else:
+        timer_label.config(text="00:00:00")
+        current_task_label.config(text="No Timers Added")
+
     root.after(1000, update_clock)
 
 
 def get_time_values():
     try:
-        # .get() retrieves the string; int() converts it to a number
-        # We use or '0' to handle cases where the user deletes the default 0
+        # Get the name from the new entry field
+        timer_name = name_entry.get() or "Timer"
+
         h = int(hour_entry.get() or 0)
         m = int(min_entry.get() or 0)
         s = int(sec_entry.get() or 0)
 
-        orchestrator.add_timer(time = (h,m,s))
+        # Forward BOTH the time tuple and the name to the orchestrator
+        orchestrator.add_timer(time=(h, m, s), name=timer_name)
+
+        # Optional: Reset the name field for the next entry
+        name_entry.delete(0, tk.END)
+        name_entry.insert(0, "Timer")
+
     except ValueError:
-        # This triggers if someone types "abc" instead of a number
-        print("Please enter valid numbers only!")
-        return 0, 0, 0
+        print("Please enter valid numbers for time!")
 
 def start_timer():
     orchestrator.on = True
@@ -47,6 +55,9 @@ root.configure(pady=20)
 
 # --- 1. Timer Display ---
 # Using a large font for the main clock
+current_task_label = tk.Label(root, text="Waiting...", font=("Helvetica", 14), fg="gray")
+current_task_label.pack()
+
 timer_label = tk.Label(root, text="00:00:00", font=("Helvetica", 40))
 timer_label.pack(pady=40)
 
@@ -93,6 +104,14 @@ tk.Label(input_frame, text=":", font=("Helvetica", 18)).grid(row=0, column=3)
 sec_entry = tk.Entry(input_frame, **entry_params)
 sec_entry.insert(0, "0")
 sec_entry.grid(row=0, column=4, padx=5)
+
+# --- New Name Input Section ---
+name_label = tk.Label(root, text="Timer Name:")
+name_label.pack(pady=(10, 0))
+
+name_entry = tk.Entry(root, font=("Helvetica", 12), justify='center', width=20)
+name_entry.insert(0, "Timer") # Default value as requested
+name_entry.pack(pady=(0, 10))
 
 # The Add Button stays below the frame
 btn_add = tk.Button(root, text="ADD", width=10, command=get_time_values)
